@@ -5,9 +5,7 @@ INDEX VERSION 1.129+/Users/AndreEjz/Desktop/Repositorios_GitHub/projeto2_desagil
 581448434.index
 2082999600.index
 2804533573.index
-677361136.index
 2998144026.index
-3211759659.index
 2197300099.index
 4263892753.index
 3760224784.index
@@ -18,5 +16,4 @@ INDEX VERSION 1.129+/Users/AndreEjz/Desktop/Repositorios_GitHub/projeto2_desagil
 996717109.index
 2388264203.index
 1271342938.index
-524126782.index
 2583781067.index
