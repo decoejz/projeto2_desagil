@@ -1,10 +1,8 @@
 package br.pro.hashi.ensino.desagil.rafaelogic.model;
 
 public class NotGate extends Gate{
-	//private Emitter[] emitters;
 	private NandGate nand = new NandGate();
 	
-	//@Override
 	public void NotGate(NandGate nand) {
 		this.nand = nand;
 	}
@@ -17,6 +15,6 @@ public class NotGate extends Gate{
 
 	@Override
 	public boolean read() {
-		return nand.read();
+		return this.nand.read();
 	}
 }
