@@ -1,9 +1,9 @@
 package br.pro.hashi.ensino.desagil.rafaelogic.model;
 
 public class OrGate extends Gate{
-	private NandGate nand =  new NandGate(); // primeiro
-	private NandGate nand_2 =  new NandGate(); // e segundo nand
-	private NandGate nand_o = new NandGate(); //nand de saída
+	private NandGate nand =  new NandGate();
+	private NandGate nand_2 =  new NandGate();
+	private NandGate nand_o = new NandGate();
 	
 	public OrGate() {
 		nand_o.connect(0, nand);
