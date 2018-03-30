@@ -2,6 +2,6 @@
 
 Membros do Grupos:
 
-Andre Ejzenmesser
-Rebeca Triñanes
+Andre Ejzenmesser;
+Rebeca Triñanes;
 Thomas Pilnik
