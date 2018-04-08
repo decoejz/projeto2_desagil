@@ -6,6 +6,7 @@ public class OrGate extends Gate{
 	private NandGate nand_o = new NandGate();
 	
 	public OrGate() {
+		super(2,"Or");
 		nand_o.connect(0, nand);
 		nand_o.connect(1, nand_2);
 	}
