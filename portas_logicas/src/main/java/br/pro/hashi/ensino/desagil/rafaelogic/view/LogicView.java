@@ -14,95 +14,110 @@ import br.pro.hashi.ensino.desagil.rafaelogic.model.Source;
 
 // A classe JPanel representa um painel da interface gráfica,
 // onde você pode adicionar componentes como menus e botões.
-// Esta em particular representa o subpainel de uma calculadora.
-// A interface ActionListener é explicada melhor mais abaixo.
 public class LogicView extends JPanel implements ActionListener {
 
-	// Não é necessário entender esta linha, mas se você estiver curioso
-	// pode ler http://blog.caelum.com.br/entendendo-o-serialversionuid/.
 	private static final long serialVersionUID = 1L;
 
+	private Gate gate; //Criação das portas lógicas.
 
-	private Gate gate;
-
-	// A classe JTextField representa um componente usado para digitação de texto.
-	// https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
-	private	JCheckBox entrada1;
-	private	JCheckBox entrada2;
-	private JCheckBox saida;
+	// A classe JCheckBox é utilizada para a criação de botões clicáveis
+	//como caixas de checagem.
+	private	JCheckBox entrada1CheckBox; //Criação da primeira caixa.
+	private	JCheckBox entrada2CheckBox; //Criação da segunda caixa.
+	private JCheckBox saidaCheckBox; //Criação da caixa de saída.
 
 
 	public LogicView(Gate gate) {
-		this.gate = gate;
+		this.gate = gate; //Diz qual será o gate utilizado
 		
-		JLabel entrada = new JLabel("Entrada: ");
-		JLabel saidaL = new JLabel("Saida: ");
+		//Escreve um texto desejado para aparecer na interface.
+		JLabel entradaLabel = new JLabel("Entrada:");
+		JLabel saidaLabel = new JLabel("Saida:");
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		add(entrada);
+		//Os passos add() servem para adicionar os componentes, já criados, na interface.
+		add(entradaLabel);
 
+		//Essa condição if diz quantos checkbox terão na interface.
+		//Caso o número de entradas seja diferente de 1, ele cria duas checkboxes de entrada.
+		//Caso sejá apenas 1, ele cria apenas uma checkbox de entrada.
 		if(gate.getSize()!=1){
-			entrada1 = new JCheckBox();
-			entrada2 = new JCheckBox();
-			saida = new JCheckBox();	
-			add(entrada2);
-			entrada2.addActionListener(this);
+			entrada1CheckBox = new JCheckBox(); //Criação da primeira checkbox de entrada.
+			entrada2CheckBox = new JCheckBox(); //Criação da segiunda checkbox de entrada.
+			saidaCheckBox = new JCheckBox(); //Criação da checkbox de saida.
+			add(entrada2CheckBox);
+			entrada2CheckBox.addActionListener(this);
 		}
 		
 		else {
-			entrada1 = new JCheckBox();
-			saida = new JCheckBox();
+			entrada1CheckBox = new JCheckBox(); //Criação da checkbox de entrada.
+			saidaCheckBox = new JCheckBox(); //Criação da checkbox de saida.
 		}
 
-		add(entrada1);
-		add(saidaL);
-		add(saida);
+		add(entrada1CheckBox);
+		add(saidaLabel);
+		add(saidaCheckBox);
 
-		entrada1.addActionListener(this);
+		entrada1CheckBox.addActionListener(this);
 
-		saida.setEnabled(false);
-
+		saidaCheckBox.setEnabled(false);
+		
+		//Atualiza os valores das caixas.
 		update();
 	}
 
 
-	// Método que lê o peso e o raio dos primeiros campos,
-	// calcula a densidade e a escreve no terceiro campo.
+	//Método que verifica a lógica e indica qual deverá ser a saída.
 	private void update() {
-		Source entr1 = new Source();
-
+		Source entrada1Source = new Source(); //Criação do primeiro emissor lógico.
+		
+		//Caso sejam duas entradas
 		if(gate.getSize()!=1){
-			Source entr2 = new Source();
-			if(entrada2.isSelected()){
-				entr2.turn(true);		
+			Source entrada2Source = new Source(); //Criação do segundo emissor lógico.
+			
+			//Se estiver selecionado
+			if(entrada2CheckBox.isSelected()){
+				//Emissor é igual a true.
+				entrada2Source.turn(true);		
 			}
 			
-			else if(entrada2.isSelected()==false){
-				entr2.turn(false);
+			//Se não estiver selecionado
+			else if(entrada2CheckBox.isSelected()==false){
+				//Emissor é igual a false
+				entrada2Source.turn(false);
 			}
 			
-			gate.connect(1, entr2);
+			//Mandando a entrada 2 para a posição 1 de onde a lógica será feita.
+			gate.connect(1, entrada2Source);
 
 		}
 		
-		
-		if(entrada1.isSelected()){
-			entr1.turn(true);
+		//Se estiver selecionado
+		if(entrada1CheckBox.isSelected()){
+			//Emissor é igual a true.
+			entrada1Source.turn(true);
 		}
 		
-		else if(entrada1.isSelected()==false){
-			entr1.turn(false);
+		//Se não estiver selecionado
+		else if(entrada1CheckBox.isSelected()==false){
+			//Emissor é igual a false
+			entrada1Source.turn(false);
 		}
 		
-		gate.connect(0, entr1);
+		//Mandando a entrada 1 para a posição 0 de onde a lógica será feita.
+		gate.connect(0, entrada1Source);
 		
+		//Se a leitura da lógica for verdadeira.
 		if(gate.read()==true) {
-			saida.setSelected(true);
+			//O resultado deverá ser verdadeiro (CheckBox marcado)
+			saidaCheckBox.setSelected(true);
 		}
 
+		//Se a leitura da lógica for falsa
 		else if(gate.read()==false){
-			saida.setSelected(false);
+			//O resultado deverá ser falso (CheckBox desmarcado)
+			saidaCheckBox.setSelected(false);
 		}
 	}
 

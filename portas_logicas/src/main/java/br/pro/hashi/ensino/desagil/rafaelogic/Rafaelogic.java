@@ -15,7 +15,7 @@ import br.pro.hashi.ensino.desagil.rafaelogic.model.Gate;
 public class Rafaelogic {
 	public static void main(String[] args) {
 
-		// Estrutura básica de um programa Swing, já usada no Projeto 1.
+		// Estrutura básica de um programa Swing.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -31,7 +31,7 @@ public class Rafaelogic {
 				// Constrói a visão.
 				View view = new View(model);
 
-				// Configuração básica de uma janela Swing, já usada no Projeto 1.
+				// Configuração básica de uma janela Swing.
 				JFrame frame = new JFrame();
             	frame.setContentPane(view);
             	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
