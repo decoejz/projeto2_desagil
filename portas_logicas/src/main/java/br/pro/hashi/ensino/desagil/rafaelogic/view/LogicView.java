@@ -36,7 +36,7 @@ public class LogicView extends JPanel implements ActionListener {
 		this.gate = gate;
 		
 		JLabel entrada = new JLabel("Entrada: ");
-		JLabel saidaL = new JLabel("Saída: ");
+		JLabel saidaL = new JLabel("Saida: ");
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
