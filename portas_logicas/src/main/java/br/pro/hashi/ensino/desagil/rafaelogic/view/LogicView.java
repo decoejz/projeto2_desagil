@@ -1,22 +1,32 @@
 package br.pro.hashi.ensino.desagil.rafaelogic.view;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.net.URL;
 
-import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JColorChooser;
+
 
 import br.pro.hashi.ensino.desagil.rafaelogic.model.Gate;
 import br.pro.hashi.ensino.desagil.rafaelogic.model.Source;
+import br.pro.hashi.ensino.desagil.rafaelogic.view.SimplePanel;
+
 
 
 // A classe JPanel representa um painel da interface gráfica,
 // onde você pode adicionar componentes como menus e botões.
-public class LogicView extends JPanel implements ActionListener {
+public class LogicView extends SimplePanel implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	int size_img = 175;
 
 	private Gate gate; //Criação das portas lógicas.
 
@@ -24,44 +34,42 @@ public class LogicView extends JPanel implements ActionListener {
 	//como caixas de checagem.
 	private	JCheckBox entrada1CheckBox; //Criação da primeira caixa.
 	private	JCheckBox entrada2CheckBox; //Criação da segunda caixa.
-	private JCheckBox saidaCheckBox; //Criação da caixa de saída.
 
+	private Image image;
+	private Color color;
+	
+	private boolean out;
 
 	public LogicView(Gate gate) {
+		
+		super(300,300);
+		
 		this.gate = gate; //Diz qual será o gate utilizado
 		
-		//Escreve um texto desejado para aparecer na interface.
-		JLabel entradaLabel = new JLabel("Entrada:");
-		JLabel saidaLabel = new JLabel("Saida:");
+		entrada1CheckBox = new JCheckBox();
+		entrada2CheckBox = new JCheckBox();
 		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		int pos = size_img/ (this.gate.getSize()+1); //Logica de divisao em relação ao numerod e rows
+		int addPos = 275/10; //parte inteira
 		
-		//Os passos add() servem para adicionar os componentes, já criados, na interface.
-		add(entradaLabel);
-
-		//Essa condição if diz quantos checkbox terão na interface.
-		//Caso o número de entradas seja diferente de 1, ele cria duas checkboxes de entrada.
-		//Caso sejá apenas 1, ele cria apenas uma checkbox de entrada.
-		if(gate.getSize()!=1){
-			entrada1CheckBox = new JCheckBox(); //Criação da primeira checkbox de entrada.
-			entrada2CheckBox = new JCheckBox(); //Criação da segiunda checkbox de entrada.
-			saidaCheckBox = new JCheckBox(); //Criação da checkbox de saida.
-			add(entrada2CheckBox);
-			entrada2CheckBox.addActionListener(this);
+		
+		if (this.gate.getSize() >= 2){
+			add(entrada1CheckBox, 10, (pos*2)+addPos, 25, 25);
 		}
+		add(entrada2CheckBox, 10, pos+addPos, 25, 25);
 		
-		else {
-			entrada1CheckBox = new JCheckBox(); //Criação da checkbox de entrada.
-			saidaCheckBox = new JCheckBox(); //Criação da checkbox de saida.
-		}
-
-		add(entrada1CheckBox);
-		add(saidaLabel);
-		add(saidaCheckBox);
-
+		
+		
 		entrada1CheckBox.addActionListener(this);
-
-		saidaCheckBox.setEnabled(false);
+		entrada2CheckBox.addActionListener(this);
+		
+		color = Color.BLACK;
+		
+		String path = "/" + gate.toString() + ".png";
+		URL url = getClass().getResource(path);
+		image = new ImageIcon(url).getImage();
+		
+		addMouseListener(this);
 		
 		//Atualiza os valores das caixas.
 		update();
@@ -108,17 +116,18 @@ public class LogicView extends JPanel implements ActionListener {
 		//Mandando a entrada 1 para a posição 0 de onde a lógica será feita.
 		gate.connect(0, entrada1Source);
 		
-		//Se a leitura da lógica for verdadeira.
-		if(gate.read()==true) {
-			//O resultado deverá ser verdadeiro (CheckBox marcado)
-			saidaCheckBox.setSelected(true);
+		out = gate.read();
+		
+		if(out == true){
+			color = Color.RED;
+			repaint();
 		}
-
-		//Se a leitura da lógica for falsa
-		else if(gate.read()==false){
-			//O resultado deverá ser falso (CheckBox desmarcado)
-			saidaCheckBox.setSelected(false);
+		
+		else{
+			color = Color.BLACK;
+			repaint();
 		}
+		
 	}
 
 
@@ -128,4 +137,46 @@ public class LogicView extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		update();
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent event) {
+
+		int x = event.getX();
+		int y = event.getY();
+
+		if((Math.pow(x - (240+15), 2) + Math.pow(y - (110+15), 2)) < 225 && out == true){
+
+			color = JColorChooser.showDialog(this, null, color);
+			
+			repaint();
+		}
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent event) {
+	}
+	@Override
+	public void mouseReleased(MouseEvent event) {
+	}
+	@Override
+	public void mouseEntered(MouseEvent event) {
+	}
+	@Override
+	public void mouseExited(MouseEvent event) {
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+
+		g.drawImage(image, 50, 40, 175, 175, null);
+
+		g.setColor(color);
+		g.drawOval(240, 110, 30, 30);
+		g.fillOval(240, 110, 30, 30);
+
+		getToolkit().sync();
+    }
 }
+
